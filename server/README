@@ -1,0 +1,10 @@
+--  DATABASE FOR users 
+CREATE TABLE users(
+	id serial primary key,
+	email varchar(50) unique not null,
+    type VARCHAR(45),
+    password text not null,
+	role varchar(45) not null DEFAULT 'client',
+    image BYTEA,
+    file_mime_type TEXT
+)

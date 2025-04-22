@@ -1,24 +1,27 @@
-
+"use client"
 import Navbar from "@/components/Navbar";
 import "./globals.css";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
-import { Metadata } from "next";
-
-
-export const metadata : Metadata = {
-  title: 'My App',
-  description: 'Using Next.js',
-}
+import { SidebarProvider } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar"
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+
+ 
+  const hideNavigation = [""]
   return (
     <html lang="en " >
-      
       <body className="w-full ">
-        <Navbar/>
-        <ThemeSwitcher /> 
-        {children}
+      <SidebarProvider defaultOpen={true}>
+          {!hideNavigation.includes(pathname) && <Navbar />}
+          <AppSidebar />
+          <ThemeSwitcher />
+          {children}
+        </SidebarProvider>
       </body>
     </html>
   );

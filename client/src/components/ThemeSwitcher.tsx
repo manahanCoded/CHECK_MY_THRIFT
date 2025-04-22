@@ -4,12 +4,11 @@ import { useTheme } from "@/lib/useTheme";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "./ui/select";
 import { Sun, Moon } from "lucide-react";
 import { Button } from "./ui/button";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function ThemeSwitcher() {
   const { theme, setTheme, mode, setMode } = useTheme();
-  const [showNavbar, setShowNavbar] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+
 
   useEffect(() => {
     const savedMode = localStorage.getItem('themeMode') || 'light';
@@ -33,22 +32,7 @@ export default function ThemeSwitcher() {
     }
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
 
-      if (currentScrollY > lastScrollY && currentScrollY > 10) {
-        setShowNavbar(false);
-      } else if (currentScrollY < lastScrollY) {
-        setShowNavbar(true);
-      }
-
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
 
   const availableThemeColors = [
     { name: 'Zinc', light: 'bg-zinc-500', dark: 'bg-zinc-700' },
@@ -63,9 +47,7 @@ export default function ThemeSwitcher() {
 
   return (
     <section
-      className={`fixed bottom-6 md:left-20 left-3.5 z-50 text-primary drop-shadow-[0_0_0.3rem_#ffffff70] ${
-        showNavbar ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      } transition-all duration-700 ease-out`}
+      className={`fixed bottom-6  right-3.5 z-10 text-primary drop-shadow-[0_0_0.3rem_#ffffff70]`}
     >
       <div className="flex items-center gap-2">
         <Select value={theme} onValueChange={setTheme}>

@@ -1,3 +1,4 @@
+"use client"
 import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import {
@@ -10,6 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { usePathname } from "next/navigation"
 
 // Menu items.
 const items = [
@@ -41,6 +43,12 @@ const items = [
 ]
 
 export function AppSidebar() {
+  const pathName = usePathname()
+
+  const dontShow = ["/authentication/register"]
+  if (dontShow.includes(pathName)) return null
+
+  
   return (
     <section className="relative ">
       <Sidebar className="mt-14 border-none">

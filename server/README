@@ -1,10 +1,19 @@
 --  DATABASE FOR users 
-CREATE TABLE users(
-	id serial primary key,
-	email varchar(50) unique not null,
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(50) NOT NULL,
+    username VARCHAR(50),
+    phone_number UNIQUE VARCHAR(15),
+    country TEXT,
+    province TEXT,
+    city TEXT,
+    streat TEXT,
     type VARCHAR(45),
-    password text not null,
-	role varchar(45) not null DEFAULT 'client',
+    password TEXT NOT NULL,
+    role VARCHAR(45) DEFAULT 'client',
     image BYTEA,
-    file_mime_type TEXT
-)
+    file_mime_type TEXT,
+    is_verified BOOLEAN DEFAULT false,
+    verification_code VARCHAR(10),
+    code_expires_at TIMESTAMP WITHOUT TIME ZONE
+);

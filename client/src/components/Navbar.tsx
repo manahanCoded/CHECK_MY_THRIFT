@@ -37,11 +37,12 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Login from '@/app/authentication/login/page';
+import Register from '@/app/authentication/register/Register_dialog';
 
 
 const Navbar = () => {
     const [loginOpen, setLoginOpen] = useState(false)
-
+    const [registerOpen , setRegisterOpen] = useState( false)
     return (
         <section
             className={`h-14 w-full border-b fixed inset-0 bg-background z-30 py-2 px-3.5 flex items-center gap-2  text-primary`}>
@@ -73,13 +74,14 @@ const Navbar = () => {
                     </div>
                 </div>
                 <div className='flex flex-row items-center space-x-2'>
-                    <MessageCircleMore className='stroke-[1.5] cursor-pointer h-6 w-6 '/>
-                    <Bell className='stroke-[1.5] cursor-pointer h-6 w-6 '/>
-                <p
-                    className='h-8 pb-2 cursor-pointer font-semibold tracking-widest uppercase text-xs drop-shadow-[0_0_0.3rem_#ffffff70] py-2 hover:border-b-3 border-transparent hover:border-primary  transition-[border] duration-200 ease-in'
-                    onClick={() => setLoginOpen(!loginOpen)}>Login</p>
-                {loginOpen && <Login setLoginOpen={setLoginOpen} loginOpen={loginOpen}/>}
-                {/* <div className='text-primary dark:drop-shadow-[0_0_0.3rem_#ffffff70]'>
+                    <MessageCircleMore className='stroke-[1.5] cursor-pointer h-6 w-6 ' />
+                    <Bell className='stroke-[1.5] cursor-pointer h-6 w-6 ' />
+                    <p
+                        className='h-8 pb-2 cursor-pointer font-semibold tracking-widest uppercase text-xs drop-shadow-[0_0_0.3rem_#ffffff70] py-2 hover:border-b-3 border-transparent hover:border-primary  transition-[border] duration-200 ease-in'
+                        onClick={() => setLoginOpen(!loginOpen)}>Login</p>
+                    {loginOpen && <Login setLoginOpen={setLoginOpen} loginOpen={loginOpen} setRegisterOpen={setRegisterOpen} />}
+                    {registerOpen && <Register setRegisterOpen={setRegisterOpen} registerOpen={registerOpen} setLoginOpen={setLoginOpen}/>}
+                    {/* <div className='text-primary dark:drop-shadow-[0_0_0.3rem_#ffffff70]'>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Ellipsis className='cursor-pointer w-6 h-6 ' />
@@ -166,7 +168,7 @@ const Navbar = () => {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div> */}
-            </div>
+                </div>
             </div>
         </section>
     );

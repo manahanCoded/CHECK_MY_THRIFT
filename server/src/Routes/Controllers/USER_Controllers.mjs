@@ -11,7 +11,7 @@ const Login = async (req, res) => {
 
         if (!problem.isEmpty()) return res.status(400).json({ error: problem.array() })
 
-        if (req.isAuthenticated()) return res.status(300).json({
+        if (req.isAuthenticated()) return res.status(200).json({
             loggedin: true,
             user: { id: req.user.id, email: req.user.email },
             message: "User is already logged in"
@@ -26,7 +26,7 @@ const Login = async (req, res) => {
                 return res.status(200).json({
                     loggedin: true,
                     user: { id: user.id, email: user.email },
-                    message: "User Successfully loggedin"
+                    message: "User Successfully logged in"
                 })
             })
         })(req, res)

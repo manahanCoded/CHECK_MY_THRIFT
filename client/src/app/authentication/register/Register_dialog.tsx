@@ -101,10 +101,13 @@ export default function Register({ setRegisterOpen, registerOpen, setLoginOpen }
         
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response?.data.error) {
-                const errors = error.response.data.error;
-                errors.forEach((err: { msg: string }) => toast.error(err.msg));
+                if (axios.isAxiosError(error) && error.response?.data.error) {
+                    setValidationErrors(error.response.data.error)
+                } else {
+                    toast.error("An internal server error occurred. Please try again later.");
+                }
             } else {
-                toast.error("An internal server error occurred. Please try again later.");
+                toast.error("An internal server error occurred. Please refresh and try again later.");
             }
         } finally {
             setLoadingNewUser_Submission(false);
@@ -155,18 +158,25 @@ export default function Register({ setRegisterOpen, registerOpen, setLoginOpen }
                                 disabled={otp.code.length !== 6}
                                 style={{ backgroundColor: "black", color: "white" }}
                                 className='w-full text-center  rounded-3xl cursor-pointer py-3 px-3 flex flex-row justify-between items-center'
+                                onClick={() =>
+                                    validationErrors.map(validatedError => {
+                                        toast(`Error: ${validatedError.type} ${validatedError.path}`, {
+                                            description: validatedError.msg,
+                                        })
+                                    })
+                                }
                             >Submit</Button>
                         </DialogFooter>
                     </form>
                     :
                     <form
                         onSubmit={handleFormSubmit}
-                        className=" space-y-4  px-6 py-8 flex flex-col items-center sm:rounded-2xl  "
+                        className=" space-y-4  px-6 py-8 flex flex-col  items-center sm:rounded-2xl  "
                         onClick={(e) => e.stopPropagation()}
                     >   <div className='w-full flex items-center justify-end '>
                         </div>
                         <DialogTitle style={{ fontSize: "1.5rem", fontWeight: "700" }}>Register</DialogTitle>
-                        <DialogDescription className='md:w-[85%] w-[100%] text-sm text-center'>By continuing, you agree to our <Link href={"/Agreement"} className='hover:underline text-blue-600'>User Agreement</Link> and acknowledge that you understand the  <Link href={"/Agreement"} className='hover:underline text-blue-600'>Privacy Policy</Link>.</DialogDescription>
+                        <DialogDescription className='md:w-[85%] w-[100%] !text-gray-700 text-sm text-center'>By continuing, you agree to our <Link href={"/Agreement"} className='hover:underline text-blue-600'>User Agreement</Link> and acknowledge that you understand the  <Link href={"/Agreement"} className='hover:underline text-blue-600'>Privacy Policy</Link>.</DialogDescription>
                         <div className='md:w-[85%] w-[100%] text-xs rounded-3xl border-gray-300 hover:bg-gray-50 cursor-pointer border py-3 px-3 flex flex-row justify-between items-center'>
                             <p>Register with Google</p>
                             <Image src={"/Authentication/google.png"} width={18} height={18} alt='google login' />
@@ -223,7 +233,7 @@ export default function Register({ setRegisterOpen, registerOpen, setLoginOpen }
                                         })
                                     })
                                 }
-                            >{loadingNewUser_Submission ? "Submitting..." : "Submit"}</Button>
+                            >Continue</Button>
                         </DialogFooter>
                     </form>
                 }

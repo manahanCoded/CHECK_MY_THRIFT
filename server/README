@@ -7,7 +7,7 @@ CREATE TABLE users (
     country TEXT,
     province TEXT,
     city TEXT,
-    streat TEXT,
+    street TEXT,
     type VARCHAR(45),
     password TEXT NOT NULL,
     role VARCHAR(45) DEFAULT 'client',

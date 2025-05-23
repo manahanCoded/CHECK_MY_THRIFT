@@ -52,7 +52,7 @@ export function AppSidebar() {
   return (
     <section className="relative ">
       <Sidebar className="mt-14 border-none">
-        <SidebarContent className="bg-white dark:bg-sidebar ">
+        <SidebarContent className="md:z-10 sm:-z-10 sm: mt-14 md:mt-0  bg-white dark:bg-sidebar ">
           <SidebarGroup>
             <SidebarGroupLabel>Application</SidebarGroupLabel>
             <SidebarGroupContent >
@@ -72,9 +72,10 @@ export function AppSidebar() {
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-      <div className="absolute mt-14 -right-10 z-20 h-screen border-r border-gray-200">
+      <div className="absolute mt-14 md:-right-5 -right-5 z-20 h-screen  border-gray-200">
         <div className="absolute mt-14 right-4 ">
-          <SidebarTrigger className="fixed  z-30 top-20" />
+          <SidebarTrigger className="fixed z-30 top-20 " />
+          <div className="fixed ml-4 z-20 top-14 border-r h-screen"></div>
         </div>
       </div>
     </section>

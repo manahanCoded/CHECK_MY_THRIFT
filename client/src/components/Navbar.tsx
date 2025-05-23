@@ -2,7 +2,7 @@
 import { Ellipsis, MessageCircleMore } from 'lucide-react';
 import Image from "next/image";
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
     Cloud,
@@ -38,11 +38,48 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Login from '@/app/authentication/login/page';
 import Register from '@/app/authentication/register/Register_dialog';
+import { usePathname } from 'next/navigation';
+import axios from 'axios';
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"
 
 const Navbar = () => {
     const [loginOpen, setLoginOpen] = useState(false)
     const [registerOpen , setRegisterOpen] = useState( false)
+    const [user, setUser] = useState({
+        id: "",
+        email: "" ,
+        username: "",
+        phone_number: "",
+        country: "",
+        province: "",
+        city: "",
+        street: "",
+        type: "",
+        role: "",
+        image: "",
+        is_verified: "",
+    })
+    const navigate = usePathname()
+
+    useEffect(()=>{
+        async function handleUser() {
+            try{
+                const res = await axios.get(`${apiUrl}/users/profile`, {  withCredentials: true })
+                console.log(res.data)
+                setUser(res.data)
+            }catch( error: unknown){
+                if(axios.isAxiosError(error)  &&  error.response?.data.error){
+                    console.error(error.response.data.error)
+                }
+
+            }
+        } 
+
+        handleUser()
+
+    },[user])
+
     return (
         <section
             className={`h-14 w-full border-b fixed inset-0 bg-background z-30 py-2 px-3.5 flex items-center gap-2  text-primary`}>
@@ -71,6 +108,8 @@ const Navbar = () => {
                         <Link
                             className='h-8 pb-2 drop-shadow-[0_0_0.3rem_#ffffff70] py-2 hover:border-b-3 border-transparent hover:border-primary  transition-[border] duration-200 ease-in'
                             href={"/apartment"}>About</Link>
+
+                        <p>{user.id && user.id }</p>
                     </div>
                 </div>
                 <div className='flex flex-row items-center space-x-2'>

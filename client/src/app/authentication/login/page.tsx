@@ -46,7 +46,9 @@ export default function Login({ setLoginOpen, loginOpen, setRegisterOpen }: Logi
         setLoadingLoginUser_Submission(true)
 
         try {
-            const response = await axios.post(`${apiUrl}/users/login`, loginUser);
+            const response = await axios.post(`${apiUrl}/users/login`, loginUser, {
+                withCredentials: true,
+              });
             toast.success(response.data.message);
             setLoginOpen(false)
         } catch (error: unknown) {

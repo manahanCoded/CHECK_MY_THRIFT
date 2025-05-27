@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 
 function userLoggin(req, res, next) {
-  const token = req.cookies?.CMT || req.headers.authorization?.split(" ")[1];
+  const token = req.cookies.CMT 
 
   if (!token) {
     req.user = null;

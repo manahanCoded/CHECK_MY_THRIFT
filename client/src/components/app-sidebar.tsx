@@ -1,6 +1,6 @@
 "use client"
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
-import { SidebarTrigger } from "@/components/ui/sidebar"
+import { Calendar, Home, Inbox, Search, Settings, X} from "lucide-react"
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar"
 import {
   Sidebar,
   SidebarContent,
@@ -11,7 +11,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { usePathname } from "next/navigation"
+import Image from "next/image"
+
 
 // Menu items.
 const items = [
@@ -43,39 +44,47 @@ const items = [
 ]
 
 export function AppSidebar() {
-  const pathName = usePathname()
+  const {toggleSidebar} = useSidebar()
 
-  const dontShow = ["/authentication/register"]
-  if (dontShow.includes(pathName)) return null
 
-  
   return (
-    <section className="relative ">
+    <section className="relative text-primary ">
       <Sidebar className="mt-14 border-none">
-        <SidebarContent className="md:z-10 sm:-z-10 sm: mt-14 md:mt-0  bg-white dark:bg-sidebar ">
+        <SidebarContent className=" md:z-10 sm:-z-10 md:mt-0  bg-background text-primary">
           <SidebarGroup>
-            <SidebarGroupLabel>Application</SidebarGroupLabel>
-            <SidebarGroupContent >
-              <SidebarMenu>
+            <div className="md:hidden flex items-center  justify-between">
+            <Image
+              src="/Branding_Img/CMT_Logo.png"
+              alt="Check My Thrift Logo"
+              width={80}
+              height={80}
+              className=" select-none h-12 w-20 "
+              draggable={false}
+            />
+            <X onClick={toggleSidebar} className="stroke-[1] size-8 cursor-pointer p-1 rounded-full hover:bg-secondary"/>
+            </div>
+            <SidebarGroupContent className="pl-2">
+              <SidebarMenu className="mt-2">
                 {items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
-                      <a href={item.url}>
-                        <item.icon />
-                        <span>{item.title}</span>
+                      <a className="px-5.5 text-lg h-10" href={item.url}>
+                        <item.icon className="!h-5.5 !w-5.5 stroke-[1.5] mr-1.5 " />
+                        <span className="tracking-wide">{item.title}</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
+
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-      <div className="absolute mt-14 md:-right-5 -right-5 z-20 h-screen  border-gray-200">
+      <div className="absolute md:block hidden mt-14 md:-right-5 -right-5 z-20 h-screen  border-gray-200">
         <div className="absolute mt-14 right-4 ">
-          <SidebarTrigger className="fixed z-30 top-20 " />
-          <div className="fixed ml-4 z-20 top-14 border-r h-screen"></div>
+          <SidebarTrigger className="fixed z-30 top-[4.8rem] h-8 w-8" />
+          <div className="fixed ml-4 z-20 top-14 md:border-r h-screen"></div>
         </div>
       </div>
     </section>

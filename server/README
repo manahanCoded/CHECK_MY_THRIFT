@@ -12,6 +12,7 @@ CREATE TABLE users (
     password TEXT NOT NULL,
     role VARCHAR(45) DEFAULT 'client',
     image BYTEA,
+    google_image text,
     file_mime_type TEXT,
     is_verified BOOLEAN DEFAULT false,
     verification_code VARCHAR(10),

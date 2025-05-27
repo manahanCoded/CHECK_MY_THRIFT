@@ -74,10 +74,10 @@ export default function Login({ setLoginOpen, loginOpen, setRegisterOpen }: Logi
                         </div>
                         <DialogTitle style={{ fontSize: "1.5rem", fontWeight: "700" }}>Log In</DialogTitle>
                         <DialogDescription className='md:w-[85%] !text-gray-700  w-[100%] text-sm text-center'>By continuing, you agree to our <Link href={"/Agreement"} className='hover:underline text-blue-600'>User Agreement</Link> and acknowledge that you understand the  <Link href={"/Agreement"} className='hover:underline text-blue-600'>Privacy Policy</Link>.</DialogDescription>
-                        <div className='md:w-[85%] w-[100%] text-xs rounded-3xl border-gray-300 hover:bg-gray-50 cursor-pointer border py-3 px-3 flex flex-row justify-between items-center'>
+                        <a href={`${apiUrl}/users/auth/google`} className='md:w-[85%] w-[100%] text-xs rounded-3xl border-gray-300 hover:bg-gray-50 cursor-pointer border py-3 px-3 flex flex-row justify-between items-center'>
                             <p>Continue with Google</p>
                             <Image src={"/Authentication/google.png"} width={18} height={18} alt='google login' />
-                        </div>
+                        </a>
                         <div className="md:w-[85%] w-[100%] flex items-center gap-4 ">
                             <hr className="flex-grow border-t border-gray-300" />
                             <p className="text-sm text-gray-500">OR</p>

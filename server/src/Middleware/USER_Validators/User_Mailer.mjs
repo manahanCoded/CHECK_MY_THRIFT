@@ -1,4 +1,3 @@
-// mailer.js
 import { createTransport } from "nodemailer";
 
 const transporter = createTransport({

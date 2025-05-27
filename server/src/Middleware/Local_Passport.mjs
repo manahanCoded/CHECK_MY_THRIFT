@@ -28,6 +28,7 @@ passport.use("local", new Strategy({ usernameField: "email", passwordField: "pas
                     image: user.image,
                     file_type: user.file_mime_type,
                     is_verified: user.is_verified,
+                    type: user.type,
                 };
 
 

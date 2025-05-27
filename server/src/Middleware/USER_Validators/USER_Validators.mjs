@@ -18,17 +18,13 @@ const Validate_Login = checkSchema({
           [value]
         );
 
-        if (checkUser.rowCount < 1) throw new Error("Failed to log in! Check email or password.")
-
+        if (checkUser.rowCount < 1) throw new Error("No such user")
+        if(!checkUser.rows[0].is_verified) throw new Error("Email is not verified!")
         return true;
       }
     }
   },
   password: {
-    isLength: {
-      options: { min: 6 },
-      errorMessage: "Password must be at least 6 characters",
-    },
     notEmpty: {
       errorMessage: "Password must not be empty",
     },
@@ -39,17 +35,17 @@ const Validate_Login = checkSchema({
           `SELECT * FROM users WHERE email = $1`,
           [req.body.email]
         );
-  
+
         const user = checkUser.rows[0];
         if (!user) {
-          throw new Error("Failed to log in! Check email or password.");
+          throw new Error("No user found.");
         }
-  
+
         const isMatched = await bcrypt.compare(value, user.password);
         if (!isMatched) {
           throw new Error("Failed to log in! Check email or password.");
         }
-  
+
         return true;
       }
     }
@@ -67,14 +63,10 @@ const Validate_Register = checkSchema({
     trim: true,
     custom: {
       options: async (value) => {
-        const existing = await db.query("SELECT * FROM users WHERE email = $1", [value]);
+        const existing = await db.query("SELECT * FROM users WHERE email = $1 AND is_verified = true ", [value]);
         if (existing.rows.length > 0) {
-          const user = existing.rows[0];
-          if (user.is_verified === true) {
-            throw new Error("Email is already used");
-          }
+          throw new Error( 'Email is already registered and verified.');
         }
-        return true;
       },
     },
   },

@@ -60,7 +60,7 @@ export default function Register({ setRegisterOpen, registerOpen, setLoginOpen }
         setLoadingNewUser_Submission(true)
 
         try {
-            const response = await axios.post(`${apiUrl}/users/register`, newUser);
+            const response = await axios.post(`${apiUrl}/users/register`, newUser, {withCredentials: true});
             toast.success(response.data.message);
             setIsOPTOpen(true)
             setOtp({...otp, email: newUser.email})
@@ -85,7 +85,7 @@ export default function Register({ setRegisterOpen, registerOpen, setLoginOpen }
         e.preventDefault()
         setLoadingNewUser_Submission(true)
         try {
-            const response = await axios.post(`${apiUrl}/users/verify`, otp);
+            const response = await axios.post(`${apiUrl}/users/verify`, otp, {withCredentials: true});
             toast.success(response.data.message);
             setNewUser({
                 email: "",
@@ -177,10 +177,10 @@ export default function Register({ setRegisterOpen, registerOpen, setLoginOpen }
                         </div>
                         <DialogTitle style={{ fontSize: "1.5rem", fontWeight: "700" }}>Register</DialogTitle>
                         <DialogDescription className='md:w-[85%] w-[100%] !text-gray-700 text-sm text-center'>By continuing, you agree to our <Link href={"/Agreement"} className='hover:underline text-blue-600'>User Agreement</Link> and acknowledge that you understand the  <Link href={"/Agreement"} className='hover:underline text-blue-600'>Privacy Policy</Link>.</DialogDescription>
-                        <div className='md:w-[85%] w-[100%] text-xs rounded-3xl border-gray-300 hover:bg-gray-50 cursor-pointer border py-3 px-3 flex flex-row justify-between items-center'>
+                        <Link href={`${apiUrl}/users/auth/google`} className='md:w-[85%] w-[100%] text-xs rounded-3xl border-gray-300 hover:bg-gray-50 cursor-pointer border py-3 px-3 flex flex-row justify-between items-center'>
                             <p>Register with Google</p>
                             <Image src={"/Authentication/google.png"} width={18} height={18} alt='google login' />
-                        </div>
+                        </Link>
                         <div className="md:w-[85%] w-[100%] flex items-center gap-4 ">
                             <hr className="flex-grow border-t border-gray-300" />
                             <p className="text-sm text-gray-500">OR</p>

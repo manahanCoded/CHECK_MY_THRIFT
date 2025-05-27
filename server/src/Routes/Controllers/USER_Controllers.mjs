@@ -31,13 +31,15 @@ const Login = async (req, res) => {
                 role: user.role,
                 image: user.image,
                 file_type: user.file_type,
-                phone_number: user.phone_number
+                phone_number: user.phone_number,
+                type: user.type,
             }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
             res.cookie("CMT", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+                maxAge: 60 * 60 * 1000
             });
 
             res.json({ message: "Logged in", user });
@@ -92,32 +94,38 @@ const Verify = async (req, res) => {
         if (!problem.isEmpty()) return res.status(400).json({ error: problem.array() });
 
         const userResult = await db.query(`SELECT * FROM users WHERE email = $1`, [email]);
-        const user = userResult.rows[0];
+        const newUser = userResult.rows[0];
 
-        if (!user) return res.status(400).json({ error: "User not found" });
+        if (!newUser) return res.status(400).json({ error: "User not found" });
 
         await db.query(
             `UPDATE users SET is_verified = TRUE, verification_code = NULL, code_expires_at = NULL WHERE email = $1`,
             [email]
         );
 
-        const token = jwt.sign({
-            id: user.id,
-            email: user.email,
-            username: user.username,
-            role: user.role,
-            image: user.image,
-            file_type: user.file_type,
-            phone_number: user.phone_number
-        }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const userToken = jwt.sign(
+            {
+                id: newUser.id,
+                email: newUser.email,
+                username: newUser.username,
+                role: newUser.role,
+                image: newUser.image,
+                file_type: newUser.file_type,
+                phone_number: newUser.phone_number,
+                type: newUser.type,
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }
+        );
 
-        res.cookie("CMT", token, {
+        res.cookie("CMT", userToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+            maxAge: 60 * 60 * 1000
         });
 
-        res.status(200).json({ message: "Email verified! User logged in.", user: { id: user.id, email: user.email } });
+        res.json({ message: "Email verified! User logged in.", userToken });
     } catch (err) {
         console.error(err);
         res.status(500).send("Server error");
@@ -131,7 +139,6 @@ const Logout = async (req, res) => {
             secure: process.env.NODE_ENV === "production",
             sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
         });
-
         return res.status(200).json({ message: "Logout successful" });
     } catch (err) {
         return res.status(500).json({ error: "Internal Server Error" });
@@ -139,6 +146,29 @@ const Logout = async (req, res) => {
 };
 
 
+const googleLogin = function (req, res) {
+    const user = req.user
+    const token = jwt.sign({
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        role: user.role,
+        image: user.image,
+        phone_number: user.phone_number,
+        is_verified: user.is_verified,
+        type: user.type,
+    }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    res.cookie("CMT", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+        maxAge: 60 * 60 * 1000
+    });
+    res.redirect(`${process.env.FRONT_END_URL}`);
+};
 
 
-export { Login, Register, Verify, Logout }
+
+
+export { Login, Register, Verify, Logout, googleLogin }

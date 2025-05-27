@@ -10,12 +10,13 @@ const app = express()
 
 app.use(bodyParser.json({ limit: "50mb" }))
 app.use(bodyParser.urlencoded({ extended: true }))
+
 app.use(cookieParser())
 
 app.set('trust proxy', 1)
 app.use(cors({
     origin: [
-        process.env.CLIENT_URL,
+        process.env.FRONT_END_URL,
         "http://localhost:3000"
     ],
     credentials: true,
